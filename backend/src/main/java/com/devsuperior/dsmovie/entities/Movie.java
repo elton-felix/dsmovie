@@ -1,9 +1,13 @@
 package com.devsuperior.dsmovie.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity //definindo que essa classe é uma entidade
@@ -17,6 +21,11 @@ public class Movie {
 	private Double score;
 	private Integer count;
 	private String image;
+	
+	//fazendo referencia para todos os scores do movie
+	//usamos o set para garantir que não temos dados repetidos, no muito pra muitos
+	@OneToMany(mappedBy = "id.movie") // configurando que a relação das entidades é 1 para muitos
+	private Set<Score> scores = new HashSet<>(); //hashset pois o Set é uma interface, então instanciamos uma classe que implemente uma interface
 	
 	public Movie() {
 	}
@@ -67,6 +76,10 @@ public class Movie {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public Set<Score> getScores() {
+		return scores;
 	}
 	
 	
