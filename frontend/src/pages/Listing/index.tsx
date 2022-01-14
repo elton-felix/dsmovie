@@ -1,19 +1,27 @@
 import axios from "axios";
 import MovieCard from "components/MovieCard";
 import Pagination from "components/Pagination";
+import { useState, useEffect} from "react";
+import { MoviePage } from "types/movie";
 import { BASE_URL } from "utils/requests";
 
 function Listing() {
 
-    //FORMA ERRADA
+    const [pageNumber, setPageNumber] = useState(0);//userstate um hook que mantem o estado do componente , para q ele não seja renderizado mais de uma vez no ciclo de vida do react
 
-    axios.get(`${BASE_URL}/movies?size=12&page=0`)//ultizamos o .then para executar algo depois da resposta chegar
+    useEffect(() =>{ //usereffect só executará essa função quando carregar o componente
+        axios.get(`${BASE_URL}/movies?size=12&page=1`)//ultizamos o .then para executar algo depois da resposta chegar
         .then(response => {
-            console.log(response.data);//data é o corpo da resposta
+           const data = response.data as MoviePage;
+           console.log(data);//data é o corpo da resposta
+           setPageNumber(data.number);
+            
         });
+    }, []);
 
     return (
         <>
+        <p>{pageNumber}</p>
             <Pagination />
 
             <div className="container">
